@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+  servidor:
+    depends_on:
+      - db
+    restart: always
+    container_name: back
+    build: ./servidor      
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./servidor/backend:/usr/src/app
+    environment:
+      - POSTGRES_NAME=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+  # web:
+  #   container_name: front
+  #   build: ./fronted
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - ./fronted/src:/app/src
+     
