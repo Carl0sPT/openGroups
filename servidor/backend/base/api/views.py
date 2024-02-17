@@ -7,8 +7,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-
-
+from .serializers import UserSerializer
+from rest_framework import status
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
@@ -32,3 +32,12 @@ def getRoutes(request):
     ]
     return Response(routes)
 
+@api_view(['POST'])
+def register_user(request):
+    serializer=UserSerializer(data=request.data)
+    if serializer.is_valid():
+        user = serializer.save()
+        user.is_staff = True
+        user.save()
+        return Response(serializer.data,status=status.HTTP_201_CREATED)
+    return Response(status=status.HTTP_400_BAD_REQUEST)

@@ -1,20 +1,21 @@
 
-import {BrowserRouter ,Route,Routes} from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { HomePage } from './pages/HomePage';
 import { LoginPage } from './pages/LoginPage';
-import { Header } from './components/Header';
+import { Navbar } from './components/Navbar';
 import { AuthProvider } from './context/AuthContext';
-// import PrivateRoute from './utils/PrivateRoute'
+import RegisterPage from './pages/RegisterPage';
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-      <AuthProvider>
-        <Header/>
-        <Routes>
-        <Route Component={HomePage} path="/" exact/>
-        <Route Component={LoginPage} path="/login" exact/>
-        </Routes>
+        <AuthProvider>
+          <Navbar />
+          <Routes>
+            <Route Component={HomePage} path="/" exact />
+            <Route Component={LoginPage} path="/login" exact />
+            <Route Component={RegisterPage} path="/register" exact />
+          </Routes>
         </AuthProvider>
       </BrowserRouter>
     </div>
