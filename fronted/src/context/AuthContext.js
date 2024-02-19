@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }) => {
             setAuthTokens(data)
             setUser(jwtDecode(data.access))
             localStorage.setItem('authTokens', JSON.stringify(data))
-            history('/')
+            history('/myAdminGroups')
         } else {
             alert('Something went wrong!')
         }
