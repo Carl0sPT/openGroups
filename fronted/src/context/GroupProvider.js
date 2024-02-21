@@ -11,6 +11,8 @@ export const GroupProvider = ({ children }) => {
     const { authTokens } = useContext(AuthContext)
     const [adminGroups, setAdminGroups] = useState([])
     const [detailsGroup, setDetailsGroup] = useState([])
+    const [detailsOneGroup, setDetailsOneGroup] = useState([])
+    const [allGroups, setAllGroups] = useState([])
     const createGroup = async (formData) => {
 
         let response = await fetch('http://localhost:8000/api/createGroup/', {
@@ -50,7 +52,7 @@ export const GroupProvider = ({ children }) => {
     }
 
     const details_group = async (group_id) => {
-        let response = await fetch(`http://localhost:8000/api/obatinedGroup/${group_id}`, {
+        let response = await fetch(`http://localhost:8000/api/obtainedGroup/${group_id}/`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer  ` + String(authTokens.access),
@@ -66,6 +68,18 @@ export const GroupProvider = ({ children }) => {
         }
     }
 
+    const details_one_group = async (group_id) => {
+        let response = await fetch(`http://localhost:8000/api/oneGroupDetails/${group_id}/`, {
+            method: 'GET'
+        })
+        let data = await response.json()
+        console.log(data)
+        if (response.status === 200) {
+            setDetailsOneGroup(data)
+        } else {
+            alert('error')
+        }
+    }
     const updateGroup = async (formData) => {
         let response = await fetch("http://localhost:8000/api/updateGroup/", {
             method: 'PUT',
@@ -83,7 +97,7 @@ export const GroupProvider = ({ children }) => {
         }
     }
     const deleteGroup = async (id) => {
-      
+
         let response = await fetch(`http://localhost:8000/api/deleteGroup/${id}/`, {
             method: 'DELETE',
             headers: {
@@ -93,11 +107,23 @@ export const GroupProvider = ({ children }) => {
         })
         let data = await response.json()
         console.log(data)
-        if(response.status.ok){
+        if (response.status.ok) {
             alert('eliminado')
         }
     }
 
+    const getAllGroups = async () => {
+        let response = await fetch('http://localhost:8000/api/allGroups/', {
+            method: 'GET'
+        })
+        let data = await response.json()
+        if (response.status === 200) {
+            setAllGroups(data)
+            console.log(data)
+        } else {
+            console.log('error')
+        }
+    }
     let contextData = {
         createGroup: createGroup,
         myAdminGroups: myAdminGroups,
@@ -107,6 +133,10 @@ export const GroupProvider = ({ children }) => {
         setDetailsGroup: setDetailsGroup,
         updateGroup: updateGroup,
         deleteGroup: deleteGroup,
+        getAllGroups: getAllGroups,
+        allGroups: allGroups,
+        details_one_group: details_one_group,
+        detailsOneGroup: detailsOneGroup,
 
     }
 

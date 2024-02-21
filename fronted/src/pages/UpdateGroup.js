@@ -30,7 +30,7 @@ export const UpdateGroup = () => {
         }));
     }
     const handleImageChange = (event) => {
-        setImage(event.target.files[0]); // Obtener el archivo de imagen seleccionado
+        setImage(event.target.files[0]); 
     };
 
     return (

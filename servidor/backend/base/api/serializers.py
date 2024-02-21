@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from django.contrib.auth.models import User
-from base.models import Groups
+from base.models import Groups,ImageMessage
 #USERS
 class UserSerializer(serializers.ModelSerializer):
     password=serializers.CharField(write_only=True)
@@ -11,7 +11,7 @@ class UserSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user=User.objects.create_user(**validated_data)
         return user
-    
+
     
 #GROUPS
 
@@ -24,3 +24,10 @@ class GroupUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Groups
         exclude = ['members']
+        
+
+##
+class ImageMessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=ImageMessage
+        fields='__all__'

@@ -14,3 +14,14 @@ class Groups(models.Model):
     def __str__(self):
         return self.name
     
+class ImageMessage(models.Model):
+    sender=models.ForeignKey(User,on_delete=models.CASCADE)
+    group=models.ForeignKey(Groups,on_delete=models.CASCADE)
+    image=models.ImageField()
+    timestamp=models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        verbose_name='Image Message'
+        verbose_name_plural='Image Messages'
+    def __str__(self):
+        return f'Image sent by {self.sender.username} at {self.timestamp}'

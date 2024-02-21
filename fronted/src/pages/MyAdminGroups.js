@@ -10,7 +10,7 @@ export const MyAdminGroups = () => {
         await deleteGroup(id)
     }
     return (
-        <div>
+        <div className="h-screen p-8">
         <div className="flex justify-center mt-8 mb-5">
             <NavLink to="/createGroup" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">
                 Create Group
@@ -25,7 +25,7 @@ export const MyAdminGroups = () => {
                                 <img src={`http://localhost:8000${group.cover_image}`} className="w-16 h-16 object-cover rounded-full mr-4" />
                                 <div>
                                     <h3 className="text-xl font-semibold">{group.name}</h3>
-                                    <p className="text-gray-700 mb-2">{group.description}</p>
+                                    <p className="text-gray-700 mb-4 line-clamp-3">{group.description}</p>
                                 </div>
                             </div>
                             <div className="flex justify-between">
