@@ -9,14 +9,17 @@ from rest_framework.parsers import MultiPartParser
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from .serializers import UserSerializer,GroupSerializer,GroupUpdateSerializer,MessageSerializer
-# ImageMessageSerializer
+from .serializers import UserSerializer,GroupSerializer,GroupUpdateSerializer,MessageSerializer,EventSerializer
+
 from rest_framework import status
 
-from base.models import Groups,Message
-# ,ImageMessage
+from base.models import Groups,Message,Event
+
+
 
 ##USERS
+
+
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
@@ -147,6 +150,7 @@ def get_one_group_details(request, group_id):
         return Response(serializer.data, status=status.HTTP_200_OK)
     except Groups.DoesNotExist:
         return Response({"message": "Group not found"}, status=status.HTTP_404_NOT_FOUND)   
+
 ## MEMBERS
 
 @api_view(['POST'])
@@ -183,7 +187,9 @@ def get_group_member_details(request, group_id):
         return Response({'members': member_details}, status=status.HTTP_200_OK)
     except Groups.DoesNotExist:
         return Response({"message": "Group not found"}, status=status.HTTP_404_NOT_FOUND)
-##Messages
+
+
+##SendMessages
 
 
 @api_view(['POST'])
@@ -225,49 +231,58 @@ def get_messages(request, group_id):
     except Groups.DoesNotExist:
         return Response({"error": "Group does not exist"}, status=status.HTTP_404_NOT_FOUND)
 
+##Events
 
-## Images
-# @api_view(['POST'])
-# @permission_classes([IsAuthenticated])
-# def create_image_message(request):
-#     sender = request.user  
-#     group_id = request.data.get('group_id')  
-#     image_file = request.data.get('image')  
-
- 
-#     if image_file is None:
-#         return Response({"error": "Image file is missing"}, status=status.HTTP_400_BAD_REQUEST)
-
-#     if sender and group_id:
-#         image_message = ImageMessage(sender=sender, group_id=group_id, image=image_file)
-#         image_message.save()
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_event(request):
+    created_by = request.user
+    name = request.data.get('name')
+    description = request.data.get('description')
+    date = request.data.get('date')
+    group = request.data.get('group')
     
-#         serializer = ImageMessageSerializer(image_message)
-#         return Response(serializer.data, status=status.HTTP_201_CREATED)
-#     else:
-#         return Response({"error": "Missing required data"}, status=status.HTTP_400_BAD_REQUEST)
-
-# @api_view(['DELETE'])
-# @permission_classes([IsAuthenticated])
-# def delete_image_message(request, image_id):
-#     try:
-#         image_message = ImageMessage.objects.get(pk=image_id)
-#         if image_message.sender == request.user:
-#             image_message.delete()
-#             return Response({"message": "Image message deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
-#         else:
-#             return Response({"error": "You are not authorized to delete this image message"}, status=status.HTTP_403_FORBIDDEN)
+    if not name:
+        return Response({"error": "name is required"}, status=status.HTTP_400_BAD_REQUEST)
+    if not date:
+        return Response({"error": "date is required"}, status=status.HTTP_400_BAD_REQUEST)
+    if not group:
+        return Response({"error": "group is required"}, status=status.HTTP_400_BAD_REQUEST)
     
-#     except ImageMessage.DoesNotExist:
-#         return Response({"error": "Image message not found"}, status=status.HTTP_404_NOT_FOUND)
+    try:
+        group = Groups.objects.get(pk=group)
+    except Groups.DoesNotExist:
+        return Response({"error": "Group does not exist"}, status=status.HTTP_404_NOT_FOUND)
     
+    event = Event(name=name, description=description, date=date, created_by=created_by, group=group)
+    event.save()
+    
+    serializer = EventSerializer(event)
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-# @api_view(['GET'])
-# @permission_classes([IsAuthenticated])
-# def get_group_images(request,group_id):
-#     try:
-#         group_images=ImageMessage.objects.filter(group_id=group_id)
-#         serializer=ImageMessageSerializer(group_images,many=True)
-#         return Response(serializer.data, status=status.HTTP_200_OK)
-#     except Exception as e:
-#         return Response({"error":str(e)},status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_event(request, event_id):
+    try:
+        event = Event.objects.get(pk=event_id)
+    except Event.DoesNotExist:
+        return Response({"error": "Event does not exist"}, status=status.HTTP_404_NOT_FOUND)
+    
+    
+    if event.created_by != request.user:
+        return Response({"error": "You are not authorized to delete this event"}, status=status.HTTP_403_FORBIDDEN)
+    
+    event.delete()
+    return Response({'message':'Event delete'},status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_group_events(request, group_id):
+    try:
+        group = Groups.objects.get(pk=group_id)
+    except Groups.DoesNotExist:
+        return Response({"error": "Group does not exist"}, status=status.HTTP_404_NOT_FOUND)
+
+    events = Event.objects.filter(group=group)
+    serializer = EventSerializer(events, many=True)
+    return Response(serializer.data)

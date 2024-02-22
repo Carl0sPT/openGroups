@@ -14,7 +14,9 @@ class Groups(models.Model):
     def __str__(self):
         return self.name
     
-    
+
+
+##Messages
 class Message(models.Model):
     sender = models.ForeignKey(User, on_delete=models.CASCADE)
     group = models.ForeignKey(Groups, on_delete=models.CASCADE)
@@ -28,27 +30,22 @@ class Message(models.Model):
     
     def __str__(self):
         return f'Message sent by {self.sender.username} at {self.timestamp}'
-# class ImageMessage(models.Model):
-#     sender=models.ForeignKey(User,on_delete=models.CASCADE)
-#     group=models.ForeignKey(Groups,on_delete=models.CASCADE)
-#     image=models.ImageField()
-#     timestamp=models.DateTimeField(auto_now_add=True)
+
+
+
+#Events
+class Event(models.Model):
+    name=models.CharField(max_length=100)
+    description=models.TextField(blank=True,null=True)
+    date=models.DateField()
+    created_by=models.ForeignKey(User,on_delete=models.CASCADE)
+    group=models.ForeignKey(Groups,on_delete=models.CASCADE)
+    class Meta:
+        verbose_name='Event'
+        verbose_name_plural='Events'
+        
+    def __str__(self):
+        return self.name
     
-#     class Meta:
-#         verbose_name='Image Message'
-#         verbose_name_plural='Image Messages'
-#     def __str__(self):
-#         return f'Image sent by {self.sender.username} at {self.timestamp}'
     
-# class TextMessage(models.Model):
-#     sender = models.ForeignKey(User, on_delete=models.CASCADE)
-#     group = models.ForeignKey(Groups, on_delete=models.CASCADE)
-#     message = models.TextField()
-#     timestamp = models.DateTimeField(auto_now_add=True)
     
-#     class Meta:
-#         verbose_name = 'Text Message'
-#         verbose_name_plural = 'Text Messages'
-    
-#     def __str__(self):
-#         return f'Message sent by {self.sender.username} at {self.timestamp}'

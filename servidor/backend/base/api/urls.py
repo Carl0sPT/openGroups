@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
-from .views import MyTokenObtainPairView, register_user,create_group,delete_group,update_group,myAdminGroups,get_group_details,join_group,leave_group,get_all_groups,get_one_group_details,get_group_member_details,send_message,get_messages
-# create_image_message,get_group_images,delete_image_message
+from .views import MyTokenObtainPairView, register_user,create_group,delete_group,update_group,myAdminGroups,get_group_details,join_group,leave_group,get_all_groups,get_one_group_details,get_group_member_details,send_message,get_messages,create_event,delete_event,get_group_events
+
 
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
@@ -21,19 +21,19 @@ urlpatterns=[
     path ('obtainedGroup/<int:group_id>/',get_group_details,name='detailsGroups'),
     path ('oneGroupDetails/<int:group_id>/',get_one_group_details,name='get_one_group_details'),
     path('allGroups/',get_all_groups,name="get_all_groups"),
-    ##MEMBERS
+    ##Members
     path('joinGroup/<int:group_id>/',join_group,name='join_group'),
     path('leaveGroup/<int:group_id>/',leave_group,name='leave_group'),
     path('getMembersName/<int:group_id>/',get_group_member_details,name='get_group_member_details'),
     
-    #Message
+    ##SendMessages
     
     path('send-message/', send_message, name='send_message'),
     path('groups/<int:group_id>/messages/', get_messages),
 
-    ##Images
+    ##Events
     
-    # path('createImageMessage/',create_image_message,name='create_image_message'),
-    # path('groups/<int:group_id>/images/', get_group_images, name='get_group_images'),
-    # path('images/<int:image_id>/delete/', delete_image_message, name='delete_image_message'),
+    path('createEvent/',create_event,name='create_event'),
+    path('deleteEvent/<int:event_id>/', delete_event, name='delete_event'),
+    path('groups/<int:group_id>/events/',get_group_events,name="get_group_events"),
 ]

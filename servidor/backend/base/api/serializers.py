@@ -1,9 +1,10 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from django.contrib.auth.models import User
-from base.models import Groups,Message
-# ,ImageMessage
+from base.models import Groups,Message,Event
+
 #USERS
+
 class UserSerializer(serializers.ModelSerializer):
     password=serializers.CharField(write_only=True)
     class Meta:
@@ -27,6 +28,8 @@ class GroupUpdateSerializer(serializers.ModelSerializer):
         exclude = ['members']
         
 
+##SendMessages
+
 class MessageSerializer(serializers.ModelSerializer):
     sender_username = serializers.SerializerMethodField()
     
@@ -36,8 +39,15 @@ class MessageSerializer(serializers.ModelSerializer):
     
     def get_sender_username(self, obj):
         return obj.sender.username
-##
-# class ImageMessageSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model=ImageMessage
-#         fields='__all__'
+
+
+##Events
+
+class EventSerializer(serializers.ModelSerializer):
+    created_by = serializers.SerializerMethodField()
+    class Meta:
+        model=Event
+        fields='__all__'
+    def get_created_by(self, obj):
+        
+        return obj.created_by.username
