@@ -3,28 +3,34 @@ import { Await, useParams } from 'react-router-dom'
 import GroupContext from '../context/GroupProvider'
 import MemberContext from '../context/MembersProvider'
 import AuthContext from '../context/AuthContext'
-import ImagesContext from '../context/ImagesProvider'
+import MessageContext from '../context/MessageProvider'
 export const GroupPage = () => {
     const { id } = useParams()
     const { user, authTokens } = useContext(AuthContext)
     const { detailsOneGroup, details_one_group } = useContext(GroupContext)
     const { getNameMembers, namesMembers, leave_group } = useContext(MemberContext)
-    const { sendImage, images, getImages, deleteImages } = useContext(ImagesContext)
+    const { sendMessage, getMessage, messages } = useContext(MessageContext)
+
+    const [text, setText] = useState("");
+
+    const handleTextChange = (e) => {
+        setText(e.target.value);
+    };
     const [formData, setFormData] = useState({
         image: null
     });
     useEffect(() => {
         details_one_group(id)
         getNameMembers(id)
-        getImages(id)
+        getMessage(id)
         console.log(namesMembers)
+        const interval = setInterval(() => {
+            getMessage(id);
+        }, 10000); 
+    
+        return () => clearInterval(interval);
 
     }, [id])
-    useEffect(() => {
-
-        getImages(id)
-
-    }, [])
 
 
     const handleLeaveGroup = () => {
@@ -35,7 +41,7 @@ export const GroupPage = () => {
         return group.owner === user.user_id;
     };
     const isImageOwner = (sender) => {
-        return sender=== user.user_id;
+        return sender === user.user_id;
     };
     const handleChange = (e) => {
         setFormData({
@@ -45,21 +51,21 @@ export const GroupPage = () => {
     };
 
 
-    const findSenderName = (senderId) => {
-        const sender = namesMembers.find(member => member.id === senderId);
-        return sender ? sender.username : senderId;
-    }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!formData.image) {
-            console.error('Image file is missing');
+        if (!text.trim() && !formData.image) {
+            alert("Please enter a message or upload an image.");
             return;
         }
         const formDataToSend = new FormData();
         formDataToSend.append('group_id', id);
-        formDataToSend.append('image', formData.image);
-        await sendImage(formDataToSend);
-        await getImages(id);
+        formDataToSend.append('message_image', formData.image);
+        formDataToSend.append('message_text', text);
+        await sendMessage(formDataToSend)
+        setText("")
+        await getMessage(id)
+
     }
 
     const formatTimestamp = (timestamp) => {
@@ -70,11 +76,7 @@ export const GroupPage = () => {
 
         return `${formattedDate} - ${formattedTime}`;
     };
-    const deleteImage=async(image_id)=>{
-        await deleteImages(image_id)
-        await getImages(id);
 
-    }
     return (
         <div className="container mx-auto p-8 h-screen">
             <div className="flex flex-col md:flex-row items-center justify-center">
@@ -86,19 +88,37 @@ export const GroupPage = () => {
                             Leave Group
                         </button>
                     )}
-                    {images && images.map((image, index) => (
-                        <div key={index} className="mb-4">
-                            <img src={`http://localhost:8000/${image.image}`} alt={`Image ${index}`} className="w-32 h-32 mr-4 mb-2" />
-                            <p className="text-sm text-gray-600">{formatTimestamp(image.timestamp)}</p>
-                            <p className="text-sm text-gray-600">Sender: {findSenderName(image.sender)}</p>
-                            {isImageOwner(image.sender) && (
-                                <button onClick={()=>deleteImage(image.id)} className="bg-red-500 text-white py-1 px-2 rounded-md hover:bg-red-600 transition duration-300">
-                                    Delete
-                                </button>
-                            )}
-                        </div>
-                    ))}
+                    <div className="mb-8 my-8">
+                        {messages.map((message, index) => (
+                            <div key={index} className="mb-4">
+                                <div className="flex justify-between items-start">
+                                    <div>
+                                        <p className="text-sm text-gray-600 text-left my-5">{message.sender_username}</p>
+                                        <div className="flex items-center">
+                                            {message.message_image && message.message_image !== '/media/null' && (
+                                                <img src={`http://localhost:8000${message.message_image}`} alt="Message" className="w-32 h-32 mr-4 mb-2" />
+                                            )}
+                                            <div>
+                                                {message.message_text && (
+                                                    <p className="text-sm text-gray-600">{message.message_text}</p>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="text-right ml-auto">
+                                        <p className="text-sm text-gray-600">{formatTimestamp(message.timestamp)}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+
+
+                    </div>
                     <form className="mt-8" encType="multipart/form-data" onSubmit={handleSubmit}>
+                        <div className="mb-4">
+                            <label htmlFor="text" className="block text-gray-700 font-bold mb-2">Message Text</label>
+                            <textarea id="text" name="text" onChange={handleTextChange} className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+                        </div>
                         <div className="mb-4">
                             <label htmlFor="image" className="block text-gray-700 font-bold mb-2">Upload Image</label>
                             <input type="file" id="image" name="image" onChange={handleChange} className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />

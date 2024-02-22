@@ -11,7 +11,8 @@ import { MyAdminGroups } from './pages/MyAdminGroups';
 import { UpdateGroup } from './pages/UpdateGroup';
 import { GroupPage } from './pages/GroupPage';
 import { MemberProvider } from './context/MembersProvider';
-import { ImagesProvider } from './context/ImagesProvider';
+import { MessageProvider } from './context/MessageProvider';
+// import { ImagesProvider } from './context/ImagesProvider';
 function App() {
   return (
     <div className="App">
@@ -19,7 +20,8 @@ function App() {
         <AuthProvider>
           <GroupProvider>
             <MemberProvider>
-              <ImagesProvider>
+              {/* <ImagesProvider> */}
+              < MessageProvider>
                 <Navbar />
                 <Routes>
                   <Route Component={HomePage} path="/" exact />
@@ -31,7 +33,8 @@ function App() {
                   <Route Component={GroupPage} path="/group/:id" exact />
 
                 </Routes>
-              </ImagesProvider>
+              </MessageProvider>
+              {/* </ImagesProvider> */}
             </MemberProvider>
           </GroupProvider>
         </AuthProvider>

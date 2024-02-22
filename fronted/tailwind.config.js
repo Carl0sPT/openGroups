@@ -4,7 +4,13 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        discord: {
+          DEFAULT: '#36393f', // Color de fondo de Discord
+        },
+      },
+    },
   },
   plugins: [],
-}
+};

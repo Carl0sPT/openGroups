@@ -13,6 +13,7 @@ export const GroupProvider = ({ children }) => {
     const [detailsGroup, setDetailsGroup] = useState([])
     const [detailsOneGroup, setDetailsOneGroup] = useState([])
     const [allGroups, setAllGroups] = useState([])
+
     const createGroup = async (formData) => {
 
         let response = await fetch('http://localhost:8000/api/createGroup/', {
