@@ -12,7 +12,8 @@ import { UpdateGroup } from './pages/UpdateGroup';
 import { GroupPage } from './pages/GroupPage';
 import { MemberProvider } from './context/MembersProvider';
 import { MessageProvider } from './context/MessageProvider';
-// import { ImagesProvider } from './context/ImagesProvider';
+import { CreateEvent } from './pages/CreateEvent';
+import { EventsProvider } from './context/EventsProvider';
 function App() {
   return (
     <div className="App">
@@ -20,21 +21,22 @@ function App() {
         <AuthProvider>
           <GroupProvider>
             <MemberProvider>
-              {/* <ImagesProvider> */}
               < MessageProvider>
-                <Navbar />
-                <Routes>
-                  <Route Component={HomePage} path="/" exact />
-                  <Route Component={LoginPage} path="/login" exact />
-                  <Route Component={RegisterPage} path="/register" exact />
-                  <Route Component={CreateGroup} path="/createGroup" exact />
-                  <Route Component={MyAdminGroups} path="/myAdminGroups" exact />
-                  <Route Component={UpdateGroup} path="/UpdateGroup/:id" exact />
-                  <Route Component={GroupPage} path="/group/:id" exact />
-
-                </Routes>
+                <EventsProvider>
+                  <Navbar />
+                  <Routes>
+                    <Route Component={HomePage} path="/" exact />
+                    <Route Component={LoginPage} path="/login" exact />
+                    <Route Component={RegisterPage} path="/register" exact />
+                    <Route Component={CreateGroup} path="/createGroup" exact />
+                    <Route Component={MyAdminGroups} path="/myAdminGroups" exact />
+                    <Route Component={UpdateGroup} path="/UpdateGroup/:id" exact />
+                    <Route Component={GroupPage} path="/group/:id" exact />
+                    <Route Component={CreateEvent} path="/createEvent/:id" exact />
+                  </Routes>
+                </EventsProvider>
               </MessageProvider>
-              {/* </ImagesProvider> */}
+
             </MemberProvider>
           </GroupProvider>
         </AuthProvider>

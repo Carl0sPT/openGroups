@@ -10,7 +10,7 @@ export const MyAdminGroups = () => {
         await deleteGroup(id)
     }
     return (
-        <div className="h-screen p-8">
+        <div className="h-screen p-8 bg-#0C1821">
         <div className="flex justify-center mt-8 mb-5">
             <NavLink to="/createGroup" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-300">
                 Create Group
@@ -19,13 +19,13 @@ export const MyAdminGroups = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {adminGroups.length > 0 ? (
                 adminGroups.map(group => (
-                    <div key={group.id} className="bg-white shadow-md rounded-lg overflow-hidden">
+                    <div key={group.id} className="bg-#18242D shadow-md rounded-lg overflow-hidden">
                         <div className="p-6">
                             <div className="flex items-center mb-4">
                                 <img src={`http://localhost:8000${group.cover_image}`} className="w-16 h-16 object-cover rounded-full mr-4" />
                                 <div>
-                                    <h3 className="text-xl font-semibold">{group.name}</h3>
-                                    <p className="text-gray-700 mb-4 line-clamp-3">{group.description}</p>
+                                    <h3 className="text-xl  text-white font-semibold">{group.name}</h3>
+                                    <p className=" text-white mb-4 line-clamp-3">{group.description}</p>
                                 </div>
                             </div>
                             <div className="flex justify-between">

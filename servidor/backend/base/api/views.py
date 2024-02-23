@@ -273,7 +273,7 @@ def delete_event(request, event_id):
         return Response({"error": "You are not authorized to delete this event"}, status=status.HTTP_403_FORBIDDEN)
     
     event.delete()
-    return Response({'message':'Event delete'},status=status.HTTP_204_NO_CONTENT)
+    return Response({'message':'Event delete'},status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -285,4 +285,4 @@ def get_group_events(request, group_id):
 
     events = Event.objects.filter(group=group)
     serializer = EventSerializer(events, many=True)
-    return Response(serializer.data)
+    return Response(serializer.data,status=status.HTTP_200_OK)

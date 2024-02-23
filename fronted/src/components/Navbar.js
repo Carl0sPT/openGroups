@@ -4,7 +4,7 @@ import AuthContext from '../context/AuthContext'
 export const Navbar = () => {
   let{user,logoutUser}=useContext(AuthContext)
   return (
-<nav className="bg-gray-800 p-4 flex justify-between items-center">
+<nav className="bg-#0B161E p-4 flex justify-between items-center">
   <div className="flex items-center">
     <Link to="/" className="text-white mr-4">Home</Link>
   </div>

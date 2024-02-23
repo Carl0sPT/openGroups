@@ -37,42 +37,42 @@ export const CreateGroup = () => {
   }
 
   return (
-    <div className="flex items-center justify-center h-screen">
+    <div className="flex items-center justify-center h-screen bg-#0C1821">
       <div className="max-w-md w-full px-4">
-        <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-          <h2 className="text-2xl font-bold mb-4">Create Group</h2>
+        <form onSubmit={handleSubmit} className="bg-#18242D shadow-md rounded px-8 pt-6 pb-8 mb-4">
+          <h2 className="text-2xl  text-white font-bold mb-4">Create Group</h2>
           <div className="mb-4">
-            <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-1">Group Name</label>
+            <label htmlFor="name" className="block text-white text-sm font-bold mb-1">Group Name</label>
             <input
               type="text"
               id="name"
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
+              className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500 bg-#0B161E"
               required
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="description" className="block text-gray-700 text-sm font-bold mb-1">Description</label>
+            <label htmlFor="description" className="block text-white text-sm font-bold mb-1">Description</label>
             <textarea
               id="description"
               name="description"
               value={formData.description}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
+              className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500 bg-#0B161E"
               rows="4"
               required
             ></textarea>
           </div>
           <div className="mb-4">
-            <label htmlFor="image" className="block text-gray-700 text-sm font-bold mb-1">Group Image</label>
+            <label htmlFor="image" className="block text-white text-sm font-bold mb-1">Group Image</label>
             <input
               type="file"
               id="image"
               name="image"
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
+              className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500 bg-#0B161E text-white"
               accept="image/*" 
               required
             />

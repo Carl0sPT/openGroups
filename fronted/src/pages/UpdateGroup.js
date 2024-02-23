@@ -35,39 +35,39 @@ export const UpdateGroup = () => {
 
     return (
         
-        <div className="h-screen flex items-center justify-center">
-        <div className="max-w-md w-full bg-white shadow-md rounded-lg p-8">
-            <h2 className="text-2xl font-bold mb-4">Update Group</h2>
-            <form onSubmit={handleSubmit} className="space-y-4 flex flex-col items-center">
+        <div className="h-screen flex items-center justify-center bg-#0C1821">
+        <div className="max-w-md w-full shadow-md rounded-lg p-8 bg-#18242D">
+            <h2 className="text-2xl text-white font-bold mb-4">Update Group</h2>
+            <form onSubmit={handleSubmit} className="space-y-4 flex flex-col items-center ">
                 <div className="w-full">
-                    <label htmlFor="name" className="block text-gray-700">Group Name:</label>
+                    <label htmlFor="name" className="block text-white">Group Name:</label>
                     <input
                         type="text"
                         id="name"
                         name="name"
                         value={detailsGroup.name}
                         onChange={handleChange}
-                        className="w-full border rounded-md py-2 px-3 focus:outline-none focus:border-blue-400"
+                        className="w-full border rounded-md py-2 px-3 focus:outline-none focus:border-blue-400 bg-#0B161E text-white"
                     />
                 </div>
                 <div className="w-full">
-                    <label htmlFor="description" className="block text-gray-700">Description:</label>
+                    <label htmlFor="description" className="block text-white">Description:</label>
                     <textarea
                         id="description"
                         name="description"
                         value={detailsGroup.description}
                         onChange={handleChange}
-                        className="w-full border rounded-md py-2 px-3 focus:outline-none focus:border-blue-400 h-32"
+                        className="w-full border rounded-md py-2 px-3 focus:outline-none focus:border-blue-400 h-32 bg-#0B161E text-white"
                     ></textarea>
                 </div>
                 <div className="w-full">
-                    <label htmlFor="cover_image" className="block text-gray-700">Cover Image:</label>
+                    <label htmlFor="cover_image" className="block text-white">Cover Image:</label>
                     <input
                         type="file"
                         id="cover_image"
                         name="cover_image"
                         onChange={handleImageChange}
-                        className="w-full border rounded-md py-2 px-3 focus:outline-none focus:border-blue-400"
+                        className="w-full border rounded-md py-2 px-3 focus:outline-none focus:border-blue-400 text-white bg-#0B161E text-white"
                     />
                 </div>
                 <button
